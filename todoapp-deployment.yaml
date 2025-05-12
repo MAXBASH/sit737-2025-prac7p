@@ -15,7 +15,7 @@ spec:
       containers:
         - name: todoapp
           image: todoapp:latest
-          imagePullPolicy: Never # For local images
+          imagePullPolicy: Never
           ports:
             - containerPort: 3000
           env:

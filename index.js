@@ -1,4 +1,3 @@
-// index.js - Fixed version with working connection string
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -12,15 +11,13 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Serve static files
 app.use(express.static(path.join(__dirname, "public")));
 
-// MongoDB Connection - Using the working connection string
+// MongoDB Connection
 const connectDB = async () => {
   try {
     console.log("MongoDB Connection Attempt...");
 
-    // Hard-code the verified working connection string
     const mongoURI =
       "mongodb://admin:password123@mongodb:27017/todoapp?authSource=admin";
 
@@ -33,7 +30,6 @@ const connectDB = async () => {
     console.log("MongoDB Connected Successfully!");
   } catch (err) {
     console.error("MongoDB Connection Error:", err);
-    // Don't exit on failure - keep the app running for debugging
     console.error("Application continuing despite MongoDB connection failure");
   }
 };
@@ -161,7 +157,6 @@ app.delete("/api/todos/:id", async (req, res) => {
   }
 });
 
-// Comprehensive debugging endpoint
 app.get("/debug", (req, res) => {
   res.json({
     mongooseState: {
@@ -181,7 +176,6 @@ app.get("/debug", (req, res) => {
   });
 });
 
-// Basic health check endpoint
 app.get("/health", (req, res) => {
   const mongoState = mongoose.connection.readyState;
   const stateText =
@@ -195,12 +189,11 @@ app.get("/health", (req, res) => {
   });
 });
 
-// Serve the main HTML file for all other routes
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Connect to MongoDB then start server regardless of connection success
+// Connect to MongoDB
 connectDB().finally(() => {
   app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
